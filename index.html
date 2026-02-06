@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Officer 2026 - Exam Platform</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #06b6d4;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Authentication Pages */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+
+        .auth-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .auth-card {
+            background: var(--bg-primary);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .auth-card h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .error-message {
+            color: var(--danger-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .toggle-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .toggle-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            background: var(--bg-primary);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dashboard-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dashboard-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .dashboard-menu {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-menu a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .dashboard-menu a:hover,
+        .dashboard-menu a.active {
+            color: var(--primary-color);
+        }
+
+        .dashboard-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .test-card {
+            background: var(--bg-primary);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        .test-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .test-series-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .test-series-btn {
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .test-series-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .test-engine {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-secondary);
+            z-index: 1000;
+        }
+
+        .test-engine.active {
+            display: flex;
+        }
+
+        .test-sidebar {
+            width: 300px;
+            background: var(--bg-primary);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .test-sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .test-timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--danger-color);
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .question-navigator {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+        }
+
+        .question-nav-btn {
+            aspect-ratio: 1;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .question-nav-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .question-nav-btn.answered {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .question-nav-btn.marked {
+            background: var(--info-color);
+            color: white;
+            border-color: var(--info-color);
+        }
+
+        .question-nav-btn.viewed {
+            background: var(--danger-color);
+            color: white;
+            border-color: var(--danger-color);
+        }
+
+        .test-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .test-header {
+            background: var(--bg-primary);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .test-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .question-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .question-text {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .option-item {
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary-color);
+            background: var(--bg-secondary);
+        }
+
+        .option-item.selected {
+            border-color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .option-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-item.selected .option-radio {
+            border-color: var(--primary-color);
+        }
+
+        .option-item.selected .option-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
+        .test-footer {
+            background: var(--bg-primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .batch-info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .performance-table th,
+        .performance-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .performance-table th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .perf-high {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .perf-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .perf-low {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .test-engine {
+                flex-direction: column;
+            }
+
+            .test-sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Container -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-wrapper">
+            <div class="auth-card">
+                <h2 id="studentAuthTitle">Student Login</h2>
+                <form id="studentLoginForm">
+                    <div class="form-group">
+                        <label for="studentLoginUsername">Username or Email</label>
+                        <input type="text" id="studentLoginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentLoginPassword">Password</label>
+                        <input type="password" id="studentLoginPassword" required>
+                    </div>
+                    <div id="studentLoginError" class="error-message"></div>
+                    <button type="submit" class="btn btn-primary btn-full">Login</button>
+                    <div class="toggle-link">
+                        Don't have an account? <a href="#" id="showSignupLink">Sign Up</a>
+                    </div>
+                </form>
+
+                <form id="studentSignupForm" class="hidden">
+                    <div class="form-group">
+                        <label for="signupFirstName">First Name *</label>
+                        <input type="text" id="signupFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupLastName">Last Name *</label>
+                        <input type="text" id="signupLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupDOB">Date of Birth *</label>
+                        <input type="date" id="signupDOB" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Caste Category * (Max 2: General alone OR General + one OR one non-General)</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="casteGeneral" value="General">
+                                <label for="casteGeneral">General</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="casteOBC" value="OBC">
+                                <label for="casteOBC">OBC</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="casteMBC" value="MBC">
+                                <label for="casteMBC">MBC</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="casteSC" value="SC">
+                                <label for="casteSC">SC</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="casteEWS" value="EWS">
+                                <label for="casteEWS">EWS</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="castePwBD" value="PwBD">
+                                <label for="castePwBD">PwBD</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupMobile">Mobile Number *</label>
+                        <input type="tel" id="signupMobile" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email ID *</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupUsername">Username *</label>
+                        <input type="text" id="signupUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password *</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <div id="studentSignupError" class="error-message"></div>
+                    <div id="studentSignupSuccess" class="success-message"></div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign Up</button>
+                    <div class="toggle-link">
+                        Already have an account? <a href="#" id="showLoginLink">Login</a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="auth-card" style="display: flex; align-items: center; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; cursor: pointer;" onclick="showAdminLogin()">👨‍💼</div>
+                    <h3 style="color: var(--text-secondary);">Admin Access</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">Click icon to login</p>
+                    
+                    <form id="adminLoginForm" class="hidden" style="margin-top: 2rem; text-align: left;">
+                        <div class="form-group">
+                            <label for="adminLoginEmail">Admin Email</label>
+                            <input type="email" id="adminLoginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminLoginPassword">Admin Password</label>
+                            <input type="password" id="adminLoginPassword" required>
+                        </div>
+                        <div id="adminLoginError" class="error-message"></div>
+                        <button type="submit" class="btn btn-primary btn-full">Login as Admin</button>
+                        <button type="button" class="btn btn-secondary btn-full" style="margin-top: 0.5rem;" onclick="hideAdminLogin()">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="studentDashboard" class="dashboard">
+        <header class="dashboard-header">
+            <div class="container">
+                <nav class="dashboard-nav">
+                    <div class="dashboard-logo">TO 2026 Platform</div>
+                    <ul class="dashboard-menu">
+                        <li><a href="#" class="nav-link active" data-view="student-home">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-view="student-tests">Tests</a></li>
+                        <li><a href="#" class="nav-link" data-view="student-analytics">Analytics</a></li>
+                        <li><a href="#" class="nav-link" data-view="student-activity">Activity</a></li>
+                        <li><a href="#" class="nav-link" data-view="student-leaderboard">Leaderboard</a></li>
+                        <li><a href="#" class="nav-link" data-view="student-profile">Profile</a></li>
+                    </ul>
+                    <div class="dashboard-user">
+                        <div class="user-info">
+                            <div class="user-name" id="studentUserName"></div>
+                            <div class="user-role">Student</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="container">
+                <div id="student-home" class="view active">
+                    <div class="batch-info-card">
+                        <h2>Technical Officer 2026 Batch</h2>
+                        <p>Batch Start: 15th February 2026, 4:00 PM IST</p>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Tests Taken</div>
+                            <div class="stat-value" id="totalTestsTaken">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Unit Tests</div>
+                            <div class="stat-value" id="unitTestsCount">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Full Mocks</div>
+                            <div class="stat-value" id="fullMocksCount">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Time Spent</div>
+                            <div class="stat-value" id="totalTimeSpent">0h</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="student-tests" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Full Mock Tests</h3>
+                        </div>
+                        <div id="mockTestsList"></div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Unit Tests</h3>
+                        </div>
+                        <div class="test-grid" id="unitTestsList"></div>
+                    </div>
+                </div>
+
+                <div id="student-analytics" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Performance Analytics</h3>
+                        </div>
+                        <table class="performance-table" id="analyticsTable"></table>
+                    </div>
+                </div>
+
+                <div id="student-activity" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Test Activity</h3>
+                        </div>
+                        <div id="activityList"></div>
+                    </div>
+                </div>
+
+                <div id="student-leaderboard" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Full Mock Leaderboard</h3>
+                        </div>
+                        <div id="leaderboardContent"></div>
+                    </div>
+                </div>
+
+                <div id="student-profile" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">My Profile</h3>
+                        </div>
+                        <div id="profileDetails"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="dashboard">
+        <header class="dashboard-header">
+            <div class="container">
+                <nav class="dashboard-nav">
+                    <div class="dashboard-logo">TO 2026 - Admin</div>
+                    <ul class="dashboard-menu">
+                        <li><a href="#" class="nav-link active" data-view="admin-home">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-view="admin-pending">Pending</a></li>
+                        <li><a href="#" class="nav-link" data-view="admin-students">All Students</a></li>
+                        <li><a href="#" class="nav-link" data-view="admin-mock-results">Mock Results</a></li>
+                        <li><a href="#" class="nav-link" data-view="admin-unit-results">Unit Results</a></li>
+                        <li><a href="#" class="nav-link" data-view="admin-analytics">Student Analytics</a></li>
+                    </ul>
+                    <div class="dashboard-user">
+                        <div class="user-info">
+                            <div class="user-name">SK</div>
+                            <div class="user-role">Administrator</div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="logout()">Logout</button>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <div class="container">
+                <div id="admin-home" class="view active">
+                    <h2 style="margin-bottom: 2rem;">Admin Dashboard</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Students</div>
+                            <div class="stat-value" id="adminTotalStudents">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Pending Approvals</div>
+                            <div class="stat-value" id="adminPendingApprovals">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Approved</div>
+                            <div class="stat-value" id="adminApprovedStudents">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Rejected</div>
+                            <div class="stat-value" id="adminRejectedStudents">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="admin-pending" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pending Approvals</h3>
+                        </div>
+                        <div id="pendingApprovalsContainer"></div>
+                    </div>
+                </div>
+
+                <div id="admin-students" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Students</h3>
+                        </div>
+                        <div id="allStudentsContainer"></div>
+                    </div>
+                </div>
+
+                <div id="admin-mock-results" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Full Mock Results</h3>
+                        </div>
+                        <div id="mockResultsContainer"></div>
+                    </div>
+                </div>
+
+                <div id="admin-unit-results" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Unit Test Results</h3>
+                        </div>
+                        <div id="unitResultsContainer"></div>
+                    </div>
+                </div>
+
+                <div id="admin-analytics" class="view">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Per-Student Analytics</h3>
+                        </div>
+                        <div id="adminAnalyticsContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Test Engine -->
+    <div id="testEngine" class="test-engine">
+        <aside class="test-sidebar">
+            <div class="test-sidebar-header">
+                <div style="font-weight: 700;" id="testTitle">Test</div>
+                <div class="test-timer" id="testTimer">00:00:00</div>
+            </div>
+            <div class="question-navigator" id="questionNavigator"></div>
+        </aside>
+
+        <div class="test-main">
+            <div class="test-header">
+                <div><strong id="testHeaderTitle">Test</strong></div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-danger" onclick="submitTest()">Submit Test</button>
+                </div>
+            </div>
+
+            <div class="test-content">
+                <div class="question-container" id="questionContainer"></div>
+            </div>
+
+            <div class="test-footer">
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-secondary" onclick="previousQuestion()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextQuestion()">Next</button>
+                </div>
+                <div id="questionCounter">Question 1 of 50</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_EMAIL = 'sathishmechncc@gmail.com';
+        const ADMIN_PASSWORD = 'Sathish@#135';
+        const NEGATIVE_MARKING = -0.25;
+        const FIRST_MOCK_DATE = new Date('2026-02-21');
+        
+        const SUBJECTS = [
+            { id: 1, name: 'Basic Mathematics' },
+            { id: 2, name: 'Basic Physics' },
+            { id: 3, name: 'Basic Chemistry' },
+            { id: 4, name: 'Basic Workshop Practices' },
+            { id: 5, name: 'Digital Workplace Skills' },
+            { id: 6, name: 'Basics of Computer Engineering' },
+            { id: 7, name: 'Basics of Electrical & Electronics Engineering' },
+            { id: 8, name: 'Applied Mathematics' },
+            { id: 9, name: 'Applied Physics' },
+            { id: 10, name: 'Applied Chemistry' },
+            { id: 11, name: 'Basic Engineering Civil' },
+            { id: 12, name: 'Basics of Electronics & Instrumentation' },
+            { id: 13, name: 'Industrial Chemistry' },
+            { id: 14, name: 'Basics of Mechanical Engineering' },
+            { id: 15, name: 'Basic Engineering Practices' },
+            { id: 16, name: 'Drafting Practices' }
+        ];
+
+        let currentUser = null;
+        let currentTest = null;
+        let testTimer = null;
+        const QUESTION_BANK = [];
+
+        // Initialize question bank
+        function initQuestionBank() {
+            let id = 1;
+            SUBJECTS.forEach(subject => {
+                for (let i = 0; i < 400; i++) {
+                    QUESTION_BANK.push({
+                        id: id++,
+                        subjectId: subject.id,
+                        topic: `Topic ${Math.floor(i / 40) + 1}`,
+                        text: `${subject.name} - Question ${i + 1}: Sample diploma level question for Technical Officer exam preparation.`,
+                        options: [
+                            `Option A - First answer`,
+                            `Option B - Second answer`,
+                            `Option C - Third answer`,
+                            `Option D - Fourth answer`
+                        ],
+                        correctOptionIndex: Math.floor(Math.random() * 4),
+                        difficulty: ['Easy', 'Medium', 'Hard'][Math.floor(Math.random() * 3)],
+                        sourceType: ['file', 'internet', 'sanfoundry'][Math.floor(Math.random() * 3)],
+                        explanation: `Explanation for the correct answer based on diploma-level curriculum.`
+                    });
+                }
+            });
+
+            // GS questions
+            for (let i = 0; i < 500; i++) {
+                QUESTION_BANK.push({
+                    id: id++,
+                    subjectId: 0,
+                    topic: 'General Studies',
+                    text: `GS Question ${i + 1}: General knowledge question for competitive exams.`,
+                    options: ['Option A', 'Option B', 'Option C', 'Option D'],
+                    correctOptionIndex: Math.floor(Math.random() * 4),
+                    difficulty: 'Medium',
+                    sourceType: 'internet',
+                    explanation: 'Explanation for correct answer.'
+                });
+            }
+        }
+
+        class StorageService {
+            static get(key) {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            }
+
+            static set(key, value) {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+
+            static remove(key) {
+                localStorage.removeItem(key);
+            }
+        }
+
+        class AuthService {
+            static login(credentials, role) {
+                if (role === 'admin') {
+                    const email = (credentials.email || '').trim();
+                    const password = (credentials.password || '').trim();
+                    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+                        currentUser = { role: 'admin', email: ADMIN_EMAIL, name: 'SK' };
+                        StorageService.set('currentUser', currentUser);
+                        return { success: true };
+                    }
+                    return { success: false, error: 'Invalid admin credentials' };
+                } else {
+                    const students = StorageService.get('students') || [];
+                    const loginId = (credentials.username || '').trim();
+                    const loginPassword = (credentials.password || '').trim();
+
+                    const student = students.find(s => {
+                        const u = (s.username || '').trim();
+                        const e = (s.email || '').trim();
+                        const p = (s.password || '').trim();
+                        return (u === loginId || e === loginId) && p === loginPassword;
+                    });
+
+                    if (!student) {
+                        return { success: false, error: 'Invalid credentials' };
+                    }
+
+                    if (student.status !== 'Approved') {
+                        return { success: false, error: 'Account pending approval' };
+                    }
+
+                    currentUser = { ...student, role: 'student' };
+                    StorageService.set('currentUser', currentUser);
+                    return { success: true };
+                }
+            }
+
+            static signup(data) {
+                const students = StorageService.get('students') || [];
+                
+                if (students.find(s => s.username === data.username)) {
+                    return { success: false, error: 'Username exists' };
+                }
+                if (students.find(s => s.email === data.email)) {
+                    return { success: false, error: 'Email exists' };
+                }
+
+                const newStudent = {
+                    id: Date.now(),
+                    ...data,
+                    status: 'Pending',
+                    signupDate: new Date().toISOString(),
+                    seenQuestions: []
+                };
+
+                students.push(newStudent);
+                StorageService.set('students', students);
+                return { success: true };
+            }
+
+            static logout() {
+                currentUser = null;
+                StorageService.remove('currentUser');
+            }
+
+            static getCurrentUser() {
+                if (!currentUser) {
+                    currentUser = StorageService.get('currentUser');
+                }
+                return currentUser;
+            }
+        }
+
+        class TestService {
+            static generateTest(type, subjectId = null) {
+                const seenQuestions = currentUser.seenQuestions || [];
+                let questions = [];
+
+                if (type === 'unit') {
+                    const subjectQuestions = QUESTION_BANK.filter(q => q.subjectId === subjectId);
+                    let unseen = subjectQuestions.filter(q => !seenQuestions.includes(q.id));
+                    
+                    if (unseen.length < 50) {
+                        const seen = subjectQuestions.filter(q => seenQuestions.includes(q.id));
+                        questions = [...unseen, ...seen].slice(0, 50);
+                    } else {
+                        questions = unseen.slice(0, 50);
+                    }
+                } else if (type === 'mock') {
+                    const questionsPerSubject = Math.floor(100 / 17);
+                    
+                    SUBJECTS.forEach(subject => {
+                        const subjectQuestions = QUESTION_BANK.filter(q => q.subjectId === subject.id);
+                        let unseen = subjectQuestions.filter(q => !seenQuestions.includes(q.id));
+                        
+                        if (unseen.length < questionsPerSubject) {
+                            const seen = subjectQuestions.filter(q => seenQuestions.includes(q.id));
+                            questions.push(...unseen, ...seen.slice(0, questionsPerSubject - unseen.length));
+                        } else {
+                            questions.push(...unseen.slice(0, questionsPerSubject));
+                        }
+                    });
+
+                    const gsQuestions = QUESTION_BANK.filter(q => q.subjectId === 0);
+                    let unseenGS = gsQuestions.filter(q => !seenQuestions.includes(q.id));
+                    const gsCount = 100 - questions.length;
+                    
+                    if (unseenGS.length < gsCount) {
+                        const seenGS = gsQuestions.filter(q => seenQuestions.includes(q.id));
+                        questions.push(...unseenGS, ...seenGS.slice(0, gsCount - unseenGS.length));
+                    } else {
+                        questions.push(...unseenGS.slice(0, gsCount));
+                    }
+                }
+
+                questions = this.shuffle(questions);
+
+                return {
+                    id: Date.now(),
+                    type,
+                    subjectId,
+                    questions: questions.map(q => ({
+                        ...q,
+                        userAnswer: null,
+                        markedForReview: false,
+                        viewed: false
+                    })),
+                    startTime: new Date().toISOString(),
+                    studentId: currentUser.id,
+                    currentQuestionIndex: 0
+                };
+            }
+
+            static shuffle(array) {
+                const arr = [...array];
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+
+            static saveTest(test, submitted = false) {
+                const attempts = StorageService.get('testAttempts') || [];
+                
+                if (submitted) {
+                    test.endTime = new Date().toISOString();
+                    test.submitted = true;
+                    
+                    let correct = 0, wrong = 0, unattempted = 0;
+                    test.questions.forEach(q => {
+                        if (q.userAnswer === null) {
+                            unattempted++;
+                        } else if (q.userAnswer === q.correctOptionIndex) {
+                            correct++;
+                        } else {
+                            wrong++;
+                        }
+                    });
+                    
+                    test.score = correct + (wrong * NEGATIVE_MARKING);
+                    test.correct = correct;
+                    test.wrong = wrong;
+                    test.unattempted = unattempted;
+                    test.attempted = correct + wrong;
+                    test.accuracy = test.attempted > 0 ? ((correct / test.attempted) * 100).toFixed(2) : 0;
+                    
+                    const start = new Date(test.startTime);
+                    const end = new Date(test.endTime);
+                    test.timeTaken = Math.round((end - start) / 60000);
+                    
+                    const students = StorageService.get('students') || [];
+                    const student = students.find(s => s.id === currentUser.id);
+                    if (student) {
+                        const seenQuestions = student.seenQuestions || [];
+                        test.questions.forEach(q => {
+                            if (!seenQuestions.includes(q.id)) {
+                                seenQuestions.push(q.id);
+                            }
+                        });
+                        student.seenQuestions = seenQuestions;
+                        StorageService.set('students', students);
+                        currentUser.seenQuestions = seenQuestions;
+                    }
+                }
+                
+                const existingIndex = attempts.findIndex(a => a.id === test.id);
+                if (existingIndex !== -1) {
+                    attempts[existingIndex] = test;
+                } else {
+                    attempts.push(test);
+                }
+                
+                StorageService.set('testAttempts', attempts);
+                return test;
+            }
+
+            static getStudentAttempts(studentId) {
+                const attempts = StorageService.get('testAttempts') || [];
+                return attempts.filter(a => a.studentId === studentId && a.submitted);
+            }
+
+            static getAllAttempts() {
+                return StorageService.get('testAttempts') || [];
+            }
+
+            static getMockDates() {
+                const dates = [];
+                let current = new Date(FIRST_MOCK_DATE);
+                
+                for (let i = 0; i < 20; i++) {
+                    dates.push(new Date(current));
+                    current.setDate(current.getDate() + 7);
+                }
+                
+                return dates;
+            }
+
+            static isMockDay(date = new Date()) {
+                const mockDates = this.getMockDates();
+                const dateStr = date.toDateString();
+                return mockDates.some(d => d.toDateString() === dateStr);
+            }
+        }
+
+        function showAdminLogin() {
+            document.getElementById('adminLoginForm').classList.remove('hidden');
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('adminLoginForm').classList.add('hidden');
+            document.getElementById('adminLoginForm').reset();
+        }
+
+        function showAuth() {
+            document.getElementById('authContainer').style.display = 'flex';
+            document.getElementById('studentDashboard').classList.remove('active');
+            document.getElementById('adminDashboard').classList.remove('active');
+        }
+
+        function showStudentDashboard() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('studentDashboard').classList.add('active');
+            document.getElementById('studentUserName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+            loadStudentDashboard();
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('adminDashboard').classList.add('active');
+            loadAdminDashboard();
+        }
+
+        function logout() {
+            if (confirm('Logout?')) {
+                AuthService.logout();
+                showAuth();
+            }
+        }
+
+        function navigateToView(viewId) {
+            const dashboard = currentUser.role === 'admin' ? 'adminDashboard' : 'studentDashboard';
+            const views = document.querySelectorAll(`#${dashboard} .view`);
+            views.forEach(v => v.classList.remove('active'));
+            
+            document.getElementById(viewId).classList.add('active');
+            
+            const navLinks = document.querySelectorAll(`#${dashboard} .nav-link`);
+            navLinks.forEach(link => {
+                if (link.dataset.view === viewId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            if (viewId === 'student-tests') loadStudentTests();
+            else if (viewId === 'student-analytics') loadStudentAnalytics();
+            else if (viewId === 'student-activity') loadStudentActivity();
+            else if (viewId === 'admin-pending') loadPendingApprovals();
+            else if (viewId === 'admin-students') loadAllStudents();
+        }
+
+        function loadStudentDashboard() {
+            const attempts = TestService.getStudentAttempts(currentUser.id);
+            document.getElementById('totalTestsTaken').textContent = attempts.length;
+            document.getElementById('unitTestsCount').textContent = attempts.filter(a => a.type === 'unit').length;
+            document.getElementById('fullMocksCount').textContent = attempts.filter(a => a.type === 'mock').length;
+            const totalTime = attempts.reduce((sum, a) => sum + (a.timeTaken || 0), 0);
+            document.getElementById('totalTimeSpent').textContent = `${Math.round(totalTime / 60)}h`;
+        }
+
+        function loadStudentTests() {
+            const mockDates = TestService.getMockDates();
+            const mocksList = document.getElementById('mockTestsList');
+            
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            mockDates.slice(0, 10).forEach((date, i) => {
+                const isToday = date.toDateString() === new Date().toDateString();
+                html += `
+                    <div class="test-card">
+                        <h4>Mock Test ${i + 1} - ${date.toLocaleDateString()}</h4>
+                        ${isToday ? `<button class="btn btn-primary" onclick="startTest('mock', null)">Start Mock</button>` : `<p style="color: var(--text-secondary);">Available on ${date.toLocaleDateString()}</p>`}
+                    </div>
+                `;
+            });
+            html += '</div>';
+            mocksList.innerHTML = html;
+
+            const unitsList = document.getElementById('unitTestsList');
+            html = '';
+            SUBJECTS.forEach(subject => {
+                html += `
+                    <div class="test-card">
+                        <h4>${subject.name}</h4>
+                        <div class="test-series-list">
+                            ${Array.from({length: 10}, (_, i) => `
+                                <button class="test-series-btn" onclick="startTest('unit', ${subject.id})">
+                                    <span>Test ${i + 1}</span>
+                                    <span>Start</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            unitsList.innerHTML = html;
+        }
+
+        function loadStudentAnalytics() {
+            const attempts = TestService.getStudentAttempts(currentUser.id);
+            const table = document.getElementById('analyticsTable');
+            
+            let html = '<thead><tr><th>Subject</th><th>Tests</th><th>Avg Score</th><th>Best</th><th>Accuracy</th></tr></thead><tbody>';
+            
+            const overall = { tests: attempts.length, score: 0, accuracy: 0 };
+            if (attempts.length > 0) {
+                overall.score = (attempts.reduce((sum, a) => sum + a.score, 0) / attempts.length).toFixed(2);
+                overall.accuracy = (attempts.reduce((sum, a) => sum + parseFloat(a.accuracy), 0) / attempts.length).toFixed(2);
+            }
+            
+            html += `<tr class="perf-high"><td><strong>All Subjects (Aggregate)</strong></td><td>${overall.tests}</td><td>${overall.score}</td><td>-</td><td>${overall.accuracy}%</td></tr>`;
+            
+            SUBJECTS.forEach(subject => {
+                const subjectAttempts = attempts.filter(a => a.subjectId === subject.id);
+                if (subjectAttempts.length > 0) {
+                    const avgScore = (subjectAttempts.reduce((sum, a) => sum + a.score, 0) / subjectAttempts.length).toFixed(2);
+                    const best = Math.max(...subjectAttempts.map(a => a.score)).toFixed(2);
+                    const accuracy = (subjectAttempts.reduce((sum, a) => sum + parseFloat(a.accuracy), 0) / subjectAttempts.length).toFixed(2);
+                    const perfClass = accuracy >= 70 ? 'perf-high' : accuracy >= 50 ? 'perf-medium' : 'perf-low';
+                    html += `<tr class="${perfClass}"><td>${subject.name}</td><td>${subjectAttempts.length}</td><td>${avgScore}</td><td>${best}</td><td>${accuracy}%</td></tr>`;
+                } else {
+                    html += `<tr><td>${subject.name}</td><td colspan="4" style="text-align: center; color: var(--text-secondary);">No tests</td></tr>`;
+                }
+            });
+            
+            html += '</tbody>';
+            table.innerHTML = html;
+        }
+
+        function loadStudentActivity() {
+            const attempts = TestService.getStudentAttempts(currentUser.id);
+            const list = document.getElementById('activityList');
+            
+            if (attempts.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No activity yet</p>';
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            attempts.reverse().forEach(attempt => {
+                const subject = SUBJECTS.find(s => s.id === attempt.subjectId);
+                html += `
+                    <div class="card">
+                        <h4>${attempt.type === 'mock' ? 'Full Mock' : subject?.name}</h4>
+                        <p>Score: ${attempt.score.toFixed(2)} | Accuracy: ${attempt.accuracy}% | Time: ${attempt.timeTaken} min</p>
+                        <p style="font-size: 0.875rem; color: var(--text-secondary);">${new Date(attempt.startTime).toLocaleString()}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            list.innerHTML = html;
+        }
+
+        function loadAdminDashboard() {
+            const students = StorageService.get('students') || [];
+            document.getElementById('adminTotalStudents').textContent = students.length;
+            document.getElementById('adminPendingApprovals').textContent = students.filter(s => s.status === 'Pending').length;
+            document.getElementById('adminApprovedStudents').textContent = students.filter(s => s.status === 'Approved').length;
+            document.getElementById('adminRejectedStudents').textContent = students.filter(s => s.status === 'Rejected').length;
+        }
+
+        function loadPendingApprovals() {
+            const students = StorageService.get('students') || [];
+            const pending = students.filter(s => s.status === 'Pending');
+            const container = document.getElementById('pendingApprovalsContainer');
+            
+            if (pending.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No pending approvals</p>';
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            pending.forEach(student => {
+                const categories = [
+                    student.casteGeneral && 'General',
+                    student.casteOBC && 'OBC',
+                    student.casteMBC && 'MBC',
+                    student.casteSC && 'SC',
+                    student.casteEWS && 'EWS',
+                    student.castePwBD && 'PwBD'
+                ].filter(Boolean).join(', ');
+
+                html += `
+                    <div class="card">
+                        <h4>${student.firstName} ${student.lastName}</h4>
+                        <p><strong>Username:</strong> ${student.username} | <strong>Email:</strong> ${student.email}</p>
+                        <p><strong>Mobile:</strong> ${student.mobile} | <strong>DOB:</strong> ${new Date(student.dob).toLocaleDateString()}</p>
+                        <p><strong>Categories:</strong> ${categories}</p>
+                        <p><strong>Password:</strong> ${student.password}</p>
+                        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                            <button class="btn btn-success btn-sm" onclick="approveStudent(${student.id})">Approve</button>
+                            <button class="btn btn-danger btn-sm" onclick="rejectStudent(${student.id})">Reject</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function loadAllStudents() {
+            const students = StorageService.get('students') || [];
+            const container = document.getElementById('allStudentsContainer');
+            
+            if (students.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No students</p>';
+                return;
+            }
+
+            let html = '<div style="display: flex; flex-direction: column; gap: 1rem;">';
+            students.forEach(student => {
+                const categories = [
+                    student.casteGeneral && 'General',
+                    student.casteOBC && 'OBC',
+                    student.casteMBC && 'MBC',
+                    student.casteSC && 'SC',
+                    student.casteEWS && 'EWS',
+                    student.castePwBD && 'PwBD'
+                ].filter(Boolean).join(', ');
+
+                const badgeClass = student.status === 'Approved' ? 'badge-success' : student.status === 'Pending' ? 'badge-warning' : 'badge-danger';
+
+                html += `
+                    <div class="card">
+                        <h4>${student.firstName} ${student.lastName} <span class="badge ${badgeClass}">${student.status}</span></h4>
+                        <p><strong>Username:</strong> ${student.username} | <strong>Email:</strong> ${student.email}</p>
+                        <p><strong>Mobile:</strong> ${student.mobile} | <strong>DOB:</strong> ${new Date(student.dob).toLocaleDateString()}</p>
+                        <p><strong>Categories:</strong> ${categories}</p>
+                        <p><strong>Password:</strong> ${student.password}</p>
+                        ${student.status !== 'Approved' ? `<button class="btn btn-success btn-sm" onclick="approveStudent(${student.id})">Approve</button>` : ''}
+                    </div>
+                `;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function approveStudent(studentId) {
+            const students = StorageService.get('students') || [];
+            const student = students.find(s => s.id === studentId);
+            if (student) {
+                student.status = 'Approved';
+                StorageService.set('students', students);
+                loadAdminDashboard();
+                loadPendingApprovals();
+                loadAllStudents();
+            }
+        }
+
+        function rejectStudent(studentId) {
+            const students = StorageService.get('students') || [];
+            const student = students.find(s => s.id === studentId);
+            if (student) {
+                student.status = 'Rejected';
+                StorageService.set('students', students);
+                loadAdminDashboard();
+                loadPendingApprovals();
+                loadAllStudents();
+            }
+        }
+
+        function startTest(type, subjectId) {
+            if (type === 'mock' && !TestService.isMockDay()) {
+                alert('Mock tests only available on Saturdays');
+                return;
+            }
+
+            currentTest = TestService.generateTest(type, subjectId);
+            document.getElementById('testEngine').classList.add('active');
+            
+            const title = type === 'mock' ? 'Full Mock Test' : SUBJECTS.find(s => s.id === subjectId)?.name;
+            document.getElementById('testTitle').textContent = title;
+            document.getElementById('testHeaderTitle').textContent = title;
+            
+            renderQuestionNavigator();
+            showQuestion(0);
+            startTimer();
+        }
+
+        function renderQuestionNavigator() {
+            const container = document.getElementById('questionNavigator');
+            let html = '';
+            
+            currentTest.questions.forEach((q, index) => {
+                html += `<button class="question-nav-btn" onclick="showQuestion(${index})">${index + 1}</button>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function showQuestion(index) {
+            currentTest.currentQuestionIndex = index;
+            const question = currentTest.questions[index];
+            
+            if (!question.viewed) {
+                question.viewed = true;
+            }
+            
+            updateQuestionNavigator();
+            
+            const container = document.getElementById('questionContainer');
+            const subject = SUBJECTS.find(s => s.id === question.subjectId);
+            
+            let optionsHTML = '';
+            question.options.forEach((option, i) => {
+                const selectedClass = question.userAnswer === i ? 'selected' : '';
+                optionsHTML += `
+                    <div class="option-item ${selectedClass}" onclick="selectOption(${i})">
+                        <div class="option-radio"></div>
+                        <div>
+                            <span style="font-weight: 600; margin-right: 0.5rem;">${String.fromCharCode(65 + i)}.</span>
+                            <span>${option}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = `
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Question ${index + 1}</h3>
+                    <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">${subject ? subject.name : 'General Studies'}</div>
+                </div>
+                
+                <div class="question-text">${question.text}</div>
+                
+                <div class="options-list">
+                    ${optionsHTML}
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid var(--border-color);">
+                    <button class="btn ${question.markedForReview ? 'btn-success' : 'btn-secondary'}" onclick="toggleMarkForReview()">
+                        ${question.markedForReview ? 'Unmark' : 'Mark for Review'}
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearResponse()">Clear Response</button>
+                </div>
+            `;
+            
+            document.getElementById('questionCounter').textContent = `Question ${index + 1} of ${currentTest.questions.length}`;
+        }
+
+        function updateQuestionNavigator() {
+            const buttons = document.querySelectorAll('.question-nav-btn');
+            buttons.forEach((btn, index) => {
+                const question = currentTest.questions[index];
+                btn.className = 'question-nav-btn';
+                
+                if (index === currentTest.currentQuestionIndex) {
+                    btn.classList.add('active');
+                } else if (question.userAnswer !== null) {
+                    btn.classList.add('answered');
+                } else if (question.markedForReview) {
+                    btn.classList.add('marked');
+                } else if (question.viewed) {
+                    btn.classList.add('viewed');
+                }
+            });
+        }
+
+        function selectOption(optionIndex) {
+            const question = currentTest.questions[currentTest.currentQuestionIndex];
+            question.userAnswer = optionIndex;
+            showQuestion(currentTest.currentQuestionIndex);
+        }
+
+        function toggleMarkForReview() {
+            const question = currentTest.questions[currentTest.currentQuestionIndex];
+            question.markedForReview = !question.markedForReview;
+            showQuestion(currentTest.currentQuestionIndex);
+        }
+
+        function clearResponse() {
+            const question = currentTest.questions[currentTest.currentQuestionIndex];
+            question.userAnswer = null;
+            showQuestion(currentTest.currentQuestionIndex);
+        }
+
+        function previousQuestion() {
+            if (currentTest.currentQuestionIndex > 0) {
+                showQuestion(currentTest.currentQuestionIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentTest.currentQuestionIndex < currentTest.questions.length - 1) {
+                showQuestion(currentTest.currentQuestionIndex + 1);
+            }
+        }
+
+        function startTimer() {
+            let seconds = 0;
+            const timerDisplay = document.getElementById('testTimer');
+            
+            testTimer = setInterval(() => {
+                seconds++;
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                
+                timerDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (testTimer) {
+                clearInterval(testTimer);
+                testTimer = null;
+            }
+        }
+
+        function submitTest() {
+            if (!confirm('Submit test? You cannot change answers after submission.')) {
+                return;
+            }
+            
+            stopTimer();
+            const result = TestService.saveTest(currentTest, true);
+            document.getElementById('testEngine').classList.remove('active');
+            
+            alert(`Test submitted!\n\nScore: ${result.score.toFixed(2)}/${result.questions.length}\nCorrect: ${result.correct}\nWrong: ${result.wrong}\nAccuracy: ${result.accuracy}%`);
+            
+            if (currentUser.role === 'student') {
+                navigateToView('student-home');
+                loadStudentDashboard();
+            }
+        }
+
+        document.getElementById('studentLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const errorElement = document.getElementById('studentLoginError');
+            errorElement.textContent = '';
+            
+            const username = document.getElementById('studentLoginUsername').value.trim();
+            const password = document.getElementById('studentLoginPassword').value.trim();
+            
+            const result = AuthService.login({ username, password }, 'student');
+            
+            if (result.success) {
+                document.getElementById('studentLoginForm').reset();
+                showStudentDashboard();
+            } else {
+                errorElement.textContent = result.error;
+                errorElement.style.display = 'block';
+            }
+        });
+
+        document.getElementById('studentSignupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const categories = {
+                general: document.getElementById('casteGeneral').checked,
+                obc: document.getElementById('casteOBC').checked,
+                mbc: document.getElementById('casteMBC').checked,
+                sc: document.getElementById('casteSC').checked,
+                ews: document.getElementById('casteEWS').checked,
+                pwbd: document.getElementById('castePwBD').checked
+            };
+            
+            const selectedCount = Object.values(categories).filter(Boolean).length;
+            
+            if (selectedCount === 0 || selectedCount > 2) {
+                document.getElementById('studentSignupError').textContent = 'Select 1 or 2 categories';
+                document.getElementById('studentSignupError').style.display = 'block';
+                return;
+            }
+
+            if (selectedCount === 2 && !categories.general) {
+                document.getElementById('studentSignupError').textContent = 'If selecting 2, one must be General';
+                document.getElementById('studentSignupError').style.display = 'block';
+                return;
+            }
+
+            const data = {
+                firstName: document.getElementById('signupFirstName').value,
+                lastName: document.getElementById('signupLastName').value,
+                dob: document.getElementById('signupDOB').value,
+                casteGeneral: categories.general,
+                casteOBC: categories.obc,
+                casteMBC: categories.mbc,
+                casteSC: categories.sc,
+                casteEWS: categories.ews,
+                castePwBD: categories.pwbd,
+                mobile: document.getElementById('signupMobile').value,
+                email: document.getElementById('signupEmail').value,
+                username: document.getElementById('signupUsername').value,
+                password: document.getElementById('signupPassword').value
+            };
+            
+            const result = AuthService.signup(data);
+            
+            if (result.success) {
+                document.getElementById('studentSignupError').textContent = '';
+                document.getElementById('studentSignupError').style.display = 'none';
+                document.getElementById('studentSignupSuccess').textContent = 'Registration successful! Awaiting approval.';
+                document.getElementById('studentSignupForm').reset();
+                
+                setTimeout(() => {
+                    document.getElementById('showLoginLink').click();
+                }, 2000);
+            } else {
+                document.getElementById('studentSignupError').textContent = result.error;
+                document.getElementById('studentSignupError').style.display = 'block';
+            }
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const errorElement = document.getElementById('adminLoginError');
+            errorElement.textContent = '';
+            
+            const email = document.getElementById('adminLoginEmail').value.trim();
+            const password = document.getElementById('adminLoginPassword').value.trim();
+            
+            const result = AuthService.login({ email, password }, 'admin');
+            
+            if (result.success) {
+                document.getElementById('adminLoginForm').reset();
+                hideAdminLogin();
+                showAdminDashboard();
+            } else {
+                errorElement.textContent = result.error;
+                errorElement.style.display = 'block';
+            }
+        });
+
+        document.getElementById('showSignupLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('studentLoginForm').classList.add('hidden');
+            document.getElementById('studentSignupForm').classList.remove('hidden');
+            document.getElementById('studentAuthTitle').textContent = 'Student Sign Up';
+        });
+
+        document.getElementById('showLoginLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('studentSignupForm').classList.add('hidden');
+            document.getElementById('studentLoginForm').classList.remove('hidden');
+            document.getElementById('studentAuthTitle').textContent = 'Student Login';
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const viewId = link.dataset.view;
+                if (viewId) {
+                    navigateToView(viewId);
+                }
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initQuestionBank();
+            const user = AuthService.getCurrentUser();
+            if (user) {
+                if (user.role === 'admin') {
+                    showAdminDashboard();
+                } else if (user.role === 'student') {
+                    showStudentDashboard();
+                }
+            } else {
+                showAuth();
+            }
+        });
+    </script>
+</body>
+</html>
+
